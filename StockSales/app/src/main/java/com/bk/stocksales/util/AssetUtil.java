@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.bk.stocksales.model.Rate;
+import com.bk.stocksales.model.Transaction;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -23,6 +24,17 @@ public class AssetUtil {
         try {
             InputStream stream = context.getAssets().open("dataset/" + no + "/rates.json");
             Type collectionType = new TypeToken<Collection<Rate>>(){}.getType();
+            return new Gson().fromJson(new InputStreamReader(stream, "UTF-8") , collectionType);
+        } catch (IOException e) {
+            Log.e(AssetUtil.class.getSimpleName(), "Error loading rates file from assets: " + e.toString());
+        }
+        return null;
+    }
+
+    public static List<Transaction> loadTransactionsFile(Context context, int no) {
+        try {
+            InputStream stream = context.getAssets().open("dataset/" + no + "/transactions.json");
+            Type collectionType = new TypeToken<Collection<Transaction>>(){}.getType();
             return new Gson().fromJson(new InputStreamReader(stream, "UTF-8") , collectionType);
         } catch (IOException e) {
             Log.e(AssetUtil.class.getSimpleName(), "Error loading rates file from assets: " + e.toString());

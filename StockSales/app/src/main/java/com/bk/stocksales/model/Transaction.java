@@ -1,5 +1,7 @@
 package com.bk.stocksales.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by kosiara on 3/18/16.
  */
@@ -7,7 +9,7 @@ public class Transaction {
 
     private String sku;
     private float amount;
-    private String currencyCode;
+    @SerializedName("currency") private String currencyCode;
 
     public String getSku() {
         return sku;
