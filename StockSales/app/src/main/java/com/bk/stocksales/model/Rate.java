@@ -1,12 +1,14 @@
 package com.bk.stocksales.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by kosiara on 3/18/16.
  */
 public class Rate {
 
-    private String fromCode;
-    private String toCode;
+    @SerializedName("from") private String fromCode;
+    @SerializedName("to") private String toCode;
     private float rate;
 
     public String getFromCode() {
