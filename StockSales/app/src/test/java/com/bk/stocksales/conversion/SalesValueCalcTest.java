@@ -89,4 +89,14 @@ public class SalesValueCalcTest {
         SaleValueResult result = salesValueCalc.calculateStockSalesInGBP("J4064", true);
         assertEquals(1.875f, result.value, 0.001);
     }
+
+    @Test
+    public void calculation_heavy_load() throws Exception {
+        List<Transaction> transactions = AssetUtilTestExt.loadTransactionsFile(this.getClass(), 1);
+        List<Rate> rates = AssetUtilTestExt.loadRatesFile(this.getClass(), 1);
+
+        SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
+        SaleValueResult result = salesValueCalc.calculateStockSalesInGBP("O7730", true);
+        assertEquals(9780.62f, result.value, 0.001);
+    }
 }

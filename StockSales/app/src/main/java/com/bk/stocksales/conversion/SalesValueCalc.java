@@ -15,13 +15,12 @@ import com.google.common.util.concurrent.ExecutionError;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by kosiara on 3/18/16.
  */
 public class SalesValueCalc {
-
-    static HashMap<Vertex, Float> cache = Maps.newHashMap();
 
     List<Vertex> vertices = Lists.newArrayList();
     List<Edge> edges = Lists.newArrayList();
@@ -44,6 +43,8 @@ public class SalesValueCalc {
 
     public SaleValueResult calculateStockSalesInGBP(String sku, boolean abortOnError) throws Exception {
 
+        ConcurrentMap<Vertex, Float> cache = Maps.newConcurrentMap();
+
         double totalValue = 0.0d;
         final Vertex GBP = new Vertex("GBP");
         SaleValueResultType type = SaleValueResultType.FULL;
@@ -55,7 +56,7 @@ public class SalesValueCalc {
             if (currency.equals(GBP))
                 totalValue += amount;
             else {
-                double rate = findConversionRateForVerticesWithCache(currency, GBP);
+                double rate = findConversionRateForVerticesWithCache(cache, currency, GBP);
                 if (rate == -1) {
                     if (abortOnError)
                         throw new Exception("Invalid conversion rate!");
@@ -76,7 +77,7 @@ public class SalesValueCalc {
         return res;
     }
 
-    private double findConversionRateForVerticesWithCache(Vertex currency, Vertex gbp) {
+    private double findConversionRateForVerticesWithCache(ConcurrentMap<Vertex, Float> cache, Vertex currency, Vertex gbp) {
         if (cache.containsKey(currency))
             return cache.get(currency);
 
