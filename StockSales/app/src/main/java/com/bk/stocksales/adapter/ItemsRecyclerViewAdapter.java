@@ -20,6 +20,7 @@ import com.google.common.collect.Maps;
 
 import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -97,7 +98,7 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
                     new Vertex(tran.getCurrencyCode()),
                     new Vertex("GBP"));
             String currSymb = Currency.getInstance("GBP").getSymbol();
-            item.setSubtitle(currSymb + tran.getAmount() * convRate);
+            item.setSubtitle(currSymb + String.format(Locale.ENGLISH, "%.2f", tran.getAmount() * convRate));
         }
         notifyDataSetChanged();
     }
