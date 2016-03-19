@@ -4,6 +4,7 @@ import com.bk.stocksales.graph.Edge;
 import com.bk.stocksales.graph.Vertex;
 import com.google.common.collect.Lists;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -28,6 +29,7 @@ public class DFSIterative {
 
     public void calculate() {
         VStack stack = new VStack();
+        HashMap<Vertex, Vertex> parentMap = new HashMap<Vertex, Vertex>();
         stack.push(sourceVertex);
 
         while (!stack.empty()) {
@@ -36,12 +38,39 @@ public class DFSIterative {
                 current.setDiscovered(true);
                 for(Vertex adjVer : findAdjacentVertices(current)) {
                     stack.push(adjVer);
-                    if (adjVer.equals(destVertex))
-                        System.out.println("FOUND - " + adjVer);
+                    parentMap.put(adjVer, current);
+                    if (adjVer.equals(destVertex)) {
+                        System.out.println("FOUND - " + adjVer + ", PATH: " /* + printPath(sourceVertex, destVertex, parentMap) */ );
+                    }
                 }
             }
         }
 
+    }
+
+    private String printPath(Vertex sourceVertex, Vertex destVertex, HashMap<Vertex, Vertex> parentMap) {
+        List<Vertex> conversionPath = findConversionPath(sourceVertex, destVertex, parentMap);
+
+        String output = "";
+        for (Vertex v: conversionPath)
+            output += v;
+
+        return output;
+    }
+
+    private List<Vertex> findConversionPath(Vertex sourceVertex, Vertex destVertex, HashMap<Vertex, Vertex> parentMap) {
+        List<Vertex> path = Lists.newArrayList();
+        path.add(destVertex);
+
+        Vertex curr = parentMap.get(destVertex);
+        while (!curr.equals(sourceVertex)) {
+            path.add(curr);
+            curr = parentMap.get(curr);
+        }
+        path.add(sourceVertex);
+
+        path = Lists.reverse(path);
+        return path;
     }
 
     private int findVertexIndex(Vertex vert) {

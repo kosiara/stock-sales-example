@@ -1,5 +1,6 @@
 package com.bk.stocksales.conversion;
 
+import com.bk.stocksales.conversion.model.ConversionResult;
 import com.bk.stocksales.model.Rate;
 import com.bk.stocksales.model.Transaction;
 import com.bk.stocksales.util.AssetUtilTestExt;
@@ -18,7 +19,8 @@ public class DFSIterativeTest {
         List<Transaction> transactions = AssetUtilTestExt.loadTransactionsFile(this.getClass(), 2);
         List<Rate> rates = AssetUtilTestExt.loadRatesFile(this.getClass(), 2);
 
-        int aa = 1;
+        SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
+        ConversionResult result = salesValueCalc.calculateStockSales("", "");
     }
 
 
