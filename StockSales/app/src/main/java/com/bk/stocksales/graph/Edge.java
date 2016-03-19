@@ -9,7 +9,6 @@ public class Edge {
 
     private Vertex source;
     private Vertex destination;
-    private final int weight = 1; //weight is not taken into account
     private float rate;
 
     public Edge(Vertex source, Vertex destination, float rate) {
