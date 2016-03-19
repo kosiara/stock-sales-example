@@ -31,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
     ItemsRecyclerViewAdapter mAdapter;
     ProductsService mProductService;
 
+    /**
+     * Sample data set number
+     */
+    public static final int DATASET_NO = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +44,8 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new ItemsRecyclerViewAdapter().mainActivity(this);
         mProductService = new ProductsService(this);
         ButterKnife.bind(this);
-//        List<Rate> rates = AssetUtil.loadRatesFile(this, 2);
 
         initializeRecyclerView();
-
         mSwipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override public void onRefresh() {
                 //todo: redownload data

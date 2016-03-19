@@ -1,15 +1,19 @@
 package com.bk.stocksales.model.view;
 
-import com.bk.stocksales.model.Transaction;
-
 /**
  * Created by bkosarzycki on 03/19/15.
  */
 public class Item {
 
+    /**
+     * Represents visible fields
+     */
     private String title;
     private String subtitle;
 
+    /**
+     * Holds additional data object for each row
+     */
     private Object subItem;
 
     public String getTitle() {

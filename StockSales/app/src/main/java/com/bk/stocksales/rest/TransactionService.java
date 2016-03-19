@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 
 import com.bk.stocksales.DetailsActivity;
+import com.bk.stocksales.MainActivity;
 import com.bk.stocksales.adapter.ItemsRecyclerViewAdapter;
 import com.bk.stocksales.conversion.TransactionFilter;
 import com.bk.stocksales.model.Transaction;
@@ -33,7 +34,7 @@ public class TransactionService {
                     if (sku == null || sku.isEmpty())
                         return;
 
-                    List<Transaction> transactions = AssetUtil.loadTransactionsFile(detailsActivity, 1);
+                    List<Transaction> transactions = AssetUtil.loadTransactionsFile(detailsActivity, MainActivity.DATASET_NO);
                     List<Transaction> productTransactions = TransactionFilter.filterTransactions(sku, transactions);
 
                     List<Item> adapterList = Lists.newArrayList();

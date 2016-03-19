@@ -97,7 +97,7 @@ public class DetailsActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        List<Rate> rates = AssetUtil.loadRatesFile(DetailsActivity.this, 1);
+                        List<Rate> rates = AssetUtil.loadRatesFile(DetailsActivity.this, MainActivity.DATASET_NO);
 
                         SalesValueCalc salesValueCalc = new SalesValueCalc(rates, productTransactions);
                         adapter.refreshItemsSubtitles(salesValueCalc);
