@@ -1,5 +1,6 @@
 package com.bk.stocksales.util;
 
+import com.bk.stocksales.conversion.exception.MinusExchangeRate;
 import com.bk.stocksales.model.Rate;
 import com.bk.stocksales.model.Transaction;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * Created by bkosarzycki on 3/19/16.
  */
 public class AssetUtilTestExt extends AssetUtil {
-    public static List<Rate> loadRatesFile(Class clazz, int no) {
+    public static List<Rate> loadRatesFile(Class clazz, int no) throws MinusExchangeRate {
         try {
             ClassLoader classLoader = clazz.getClassLoader();
             String path = classLoader.getResource("dataset/" + no + "/rates.json").getFile();

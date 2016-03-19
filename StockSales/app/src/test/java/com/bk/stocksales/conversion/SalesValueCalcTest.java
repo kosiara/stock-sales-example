@@ -1,5 +1,6 @@
 package com.bk.stocksales.conversion;
 
+import com.bk.stocksales.conversion.exception.MinusExchangeRate;
 import com.bk.stocksales.conversion.model.SaleValueResult;
 import com.bk.stocksales.graph.Vertex;
 import com.bk.stocksales.model.Rate;
@@ -97,6 +98,16 @@ public class SalesValueCalcTest {
 
         SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
         SaleValueResult result = salesValueCalc.calculateStockSalesInGBP("O7730", true);
+        assertEquals(9780.62f, result.value, 0.001);
+    }
+
+    @Test(expected = MinusExchangeRate.class)
+    public void check_minus_rates() throws Exception {
+        List<Transaction> transactions = AssetUtilTestExt.loadTransactionsFile(this.getClass(), 4);
+        List<Rate> rates = AssetUtilTestExt.loadRatesFile(this.getClass(), 4);
+
+        SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
+        SaleValueResult result = salesValueCalc.calculateStockSalesInGBP("J4064", true);
         assertEquals(9780.62f, result.value, 0.001);
     }
 }

@@ -3,6 +3,8 @@ package com.bk.stocksales.util;
 import android.content.Context;
 import android.util.Log;
 
+import com.bk.stocksales.conversion.exception.MinusExchangeRate;
+import com.bk.stocksales.graph.Vertex;
 import com.bk.stocksales.model.Rate;
 import com.bk.stocksales.model.Transaction;
 import com.google.gson.Gson;
@@ -21,13 +23,14 @@ import java.util.List;
  */
 public class AssetUtil {
 
-    public static List<Rate> loadRatesFile(Context context, int no) {
+    public static List<Rate> loadRatesFile(Context context, int no) throws MinusExchangeRate {
         try {
             InputStream stream = context.getAssets().open("dataset/" + no + "/rates.json");
             return getRatesFromStream(stream);
         } catch (IOException e) {
             Log.e(AssetUtil.class.getSimpleName(), "Error loading rates file from assets: " + e.toString());
         }
+
         return null;
     }
 
@@ -41,9 +44,15 @@ public class AssetUtil {
         return null;
     }
 
-    public static List<Rate> getRatesFromStream(InputStream stream) throws UnsupportedEncodingException {
+    public static List<Rate> getRatesFromStream(InputStream stream) throws UnsupportedEncodingException, MinusExchangeRate {
         Type collectionType = new TypeToken<Collection<Rate>>(){}.getType();
-        return new Gson().fromJson(new InputStreamReader(stream, "UTF-8") , collectionType);
+        List<Rate> list =  new Gson().fromJson(new InputStreamReader(stream, "UTF-8") , collectionType);
+        for (Rate rate : list) {
+            if (rate.getRate() <= 0)
+                throw new MinusExchangeRate(new Vertex(rate.getFromCode()), new Vertex(rate.getToCode()));
+
+        }
+        return list;
     }
 
     public static List<Transaction> getTransactionsFromStream(InputStream stream) throws UnsupportedEncodingException {
