@@ -42,4 +42,8 @@ public class Vertex {
     public String toString() {
         return this.getCurrCode();
     }
+
+    public Vertex cloneVertex() {
+        return new Vertex(this.currCode);
+    }
 }

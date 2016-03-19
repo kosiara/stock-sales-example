@@ -51,4 +51,8 @@ public class Edge {
         result = 31 * result + destination.hashCode();
         return result;
     }
+
+    public Edge cloneEdge() {
+        return new Edge(source.cloneVertex(), destination.cloneVertex(), rate);
+    }
 }
