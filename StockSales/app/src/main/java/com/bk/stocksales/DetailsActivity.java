@@ -36,10 +36,9 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdapter = new ItemsRecyclerViewAdapter();
+        mAdapter = new ItemsRecyclerViewAdapter().isClickingEnabled(false);
         mTransactionsService = new TransactionService(this);
         ButterKnife.bind(this);
-
 
         initializeRecyclerView();
 

@@ -25,6 +25,7 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
             implements AdapterView.OnClickListener {
 
     private Activity mMainActivity;
+    private boolean mIsClickingEnabled = true;
 
     @Override
     public void onBindViewHolder(ViewWrapper<RecyclerItemView> viewHolder, int position) {
@@ -36,6 +37,9 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
 
     @Override
     public void onClick(View v) {
+        if (!mIsClickingEnabled)
+            return;
+
         RecyclerItemView view = (RecyclerItemView)v;
         Item item = view.getItem();
         DetailsActivity.start(mMainActivity, item);
@@ -71,6 +75,11 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
 
     public ItemsRecyclerViewAdapter mainActivity(MainActivity activity) {
         this.mMainActivity = activity;
+        return this;
+    }
+
+    public ItemsRecyclerViewAdapter isClickingEnabled(boolean clicking) {
+        this.mIsClickingEnabled = clicking;
         return this;
     }
 }
