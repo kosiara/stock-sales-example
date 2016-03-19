@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
@@ -23,8 +24,7 @@ public class AssetUtil {
     public static List<Rate> loadRatesFile(Context context, int no) {
         try {
             InputStream stream = context.getAssets().open("dataset/" + no + "/rates.json");
-            Type collectionType = new TypeToken<Collection<Rate>>(){}.getType();
-            return new Gson().fromJson(new InputStreamReader(stream, "UTF-8") , collectionType);
+            return getRatesFromStream(stream);
         } catch (IOException e) {
             Log.e(AssetUtil.class.getSimpleName(), "Error loading rates file from assets: " + e.toString());
         }
@@ -34,11 +34,20 @@ public class AssetUtil {
     public static List<Transaction> loadTransactionsFile(Context context, int no) {
         try {
             InputStream stream = context.getAssets().open("dataset/" + no + "/transactions.json");
-            Type collectionType = new TypeToken<Collection<Transaction>>(){}.getType();
-            return new Gson().fromJson(new InputStreamReader(stream, "UTF-8") , collectionType);
+            return getTransactionsFromStream(stream);
         } catch (IOException e) {
             Log.e(AssetUtil.class.getSimpleName(), "Error loading rates file from assets: " + e.toString());
         }
         return null;
+    }
+
+    public static List<Rate> getRatesFromStream(InputStream stream) throws UnsupportedEncodingException {
+        Type collectionType = new TypeToken<Collection<Rate>>(){}.getType();
+        return new Gson().fromJson(new InputStreamReader(stream, "UTF-8") , collectionType);
+    }
+
+    public static List<Transaction> getTransactionsFromStream(InputStream stream) throws UnsupportedEncodingException {
+        Type collectionType = new TypeToken<Collection<Transaction>>(){}.getType();
+        return new Gson().fromJson(new InputStreamReader(stream, "UTF-8") , collectionType);
     }
 }
