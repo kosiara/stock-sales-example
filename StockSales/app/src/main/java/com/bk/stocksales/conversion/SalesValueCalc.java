@@ -86,13 +86,8 @@ public class SalesValueCalc {
         return val;
     }
 
-    public List<Transaction> filterTransactions(final String sku) {
-        return Lists.newArrayList(Iterables.filter(transactions, new Predicate<Transaction>() {
-            @Override
-            public boolean apply(Transaction input) {
-                return input.getSku().equals(sku);
-            }
-        }));
+    protected List<Transaction> filterTransactions(final String sku) {
+        return TransactionFilter.filterTransactions(sku, transactions);
     }
 
     protected float findConversionRateForVertices(Vertex source, Vertex dest) {
