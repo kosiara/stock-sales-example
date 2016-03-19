@@ -1,5 +1,6 @@
 package com.bk.stocksales.conversion;
 
+import com.bk.stocksales.conversion.model.ConversionResult;
 import com.bk.stocksales.graph.Edge;
 import com.bk.stocksales.graph.Vertex;
 import com.bk.stocksales.model.Rate;
@@ -18,8 +19,6 @@ public class SalesValueCalc {
     List<Edge> edges = Lists.newArrayList();
     List<Transaction> transactions;
 
-    //implement cache here
-
     public SalesValueCalc(List<Rate> rates, List<Transaction> trans) {
         for (Rate rate : rates)
             edges.add(new Edge(rate));
@@ -36,7 +35,15 @@ public class SalesValueCalc {
 
     public ConversionResult calculateStockSales(String resultingCurrency, String sku) {
         DFSIterative DFSIterative = new DFSIterative(vertices, edges, new Vertex("AUD"), new Vertex("EUR"));
-        DFSIterative.calculate();
+        DFSIterative.getPossibleConversionPath();
         return null;
+    }
+
+    public List<Vertex> getVertices() {
+        return vertices;
+    }
+
+    public List<Edge> getEdges() {
+        return edges;
     }
 }

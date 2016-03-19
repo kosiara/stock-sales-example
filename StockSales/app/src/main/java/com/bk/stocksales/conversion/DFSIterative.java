@@ -25,7 +25,9 @@ public class DFSIterative {
         this.edges = edges;
     }
 
-    public void calculate() {
+    public List<Vertex> getPossibleConversionPath() {
+        List<List<Vertex>> conversionPaths = Lists.newArrayList();
+
         VStack stack = new VStack();
         HashMap<Vertex, Vertex> parentMap = new HashMap<Vertex, Vertex>();
         HashMap<Vertex, Vertex> alreadyTriedConv = new HashMap<Vertex, Vertex>();
@@ -44,11 +46,24 @@ public class DFSIterative {
                     alreadyTriedConv.put(current, adjVer);
 
                     if (adjVer.equals(destVertex)) {
-                        System.out.println("FOUND - " + adjVer + ", PATH: " + printPath(sourceVertex, destVertex, parentMap) );
+                        List<Vertex> conversionPath = findConversionPath(sourceVertex, destVertex, parentMap);
+                        conversionPaths.add(conversionPath);
+                        System.out.println("FOUND - " + adjVer + ", PATH: " + convertPathToString(conversionPath) );
                     }
                 }
             }
         }
+
+        int minLength = Integer.MAX_VALUE;
+        int indx = 0;
+        for (int i = 0; i < conversionPaths.size(); i++) {
+            if (conversionPaths.get(i).size() < minLength ) {
+                minLength = conversionPaths.get(i).size();
+                indx = i;
+            }
+        }
+
+        return conversionPaths.get(indx);
     }
 
     private boolean isSameOrInverseConversion(Vertex parent, Vertex child, HashMap<Vertex, Vertex> alreadyTriedConv) {
@@ -60,18 +75,7 @@ public class DFSIterative {
         return false;
     }
 
-    private String printPath(Vertex sourceVertex, Vertex destVertex, HashMap<Vertex, Vertex> parentMap) {
-        List<Vertex> conversionPath = findConversionPath(sourceVertex, destVertex, parentMap);
 
-        String output = "";
-        for (Vertex v: conversionPath)
-            output += v + "->";
-
-        if (output.endsWith("->"))
-            output = output.substring(0, output.length() - 2);
-
-        return output;
-    }
 
     private List<Vertex> findConversionPath(Vertex sourceVertex, Vertex destVertex, HashMap<Vertex, Vertex> parentMap) {
         List<Vertex> path = Lists.newArrayList();
@@ -104,6 +108,17 @@ public class DFSIterative {
         }
 
         return adjacent;
+    }
+
+    public static String convertPathToString(List<Vertex> conversionPath ) {
+        String output = "";
+        for (Vertex v: conversionPath)
+            output += v + "->";
+
+        if (output.endsWith("->"))
+            output = output.substring(0, output.length() - 2);
+
+        return output;
     }
 
 
