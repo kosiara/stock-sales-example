@@ -1,9 +1,9 @@
 package com.bk.stocksales.rest;
 
-import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 
+import com.bk.stocksales.DetailsActivity;
 import com.bk.stocksales.adapter.ItemsRecyclerViewAdapter;
 import com.bk.stocksales.conversion.TransactionFilter;
 import com.bk.stocksales.model.Transaction;
@@ -13,17 +13,16 @@ import com.google.common.collect.Lists;
 
 import java.util.Currency;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by bkosarzycki on 3/19/16.
  */
 public class TransactionService {
 
-    private Context context;
+    private DetailsActivity detailsActivity;
 
-    public TransactionService(Context context) {
-        this.context = context;
+    public TransactionService(DetailsActivity activity) {
+        this.detailsActivity = activity;
     }
 
     public void getTransactionsForProduct(final String sku, final RecyclerView recyclerView, final ItemsRecyclerViewAdapter adapter) {
@@ -34,7 +33,7 @@ public class TransactionService {
                     if (sku == null || sku.isEmpty())
                         return;
 
-                    List<Transaction> transactions = AssetUtil.loadTransactionsFile(context, 1);
+                    List<Transaction> transactions = AssetUtil.loadTransactionsFile(detailsActivity, 1);
                     List<Transaction> productTransactions = TransactionFilter.filterTransactions(sku, transactions);
 
                     List<Item> adapterList = Lists.newArrayList();
@@ -42,11 +41,14 @@ public class TransactionService {
                         String currSymb = Currency.getInstance(tran.getCurrencyCode()).getSymbol();
                         adapterList.add(new Item()
                                 .title(currSymb + Float.toString(tran.getAmount()))
-                                .subtitle("xxxxxx"));
+                                .subtitle("-------")
+                                .item(tran)
+                        );
                     }
 
                     adapter.addItems(adapterList);
                     recyclerView.setAdapter(adapter);
+                    detailsActivity.postCurrConversionJob(adapter, productTransactions);
                 }
             }, 75);
     }

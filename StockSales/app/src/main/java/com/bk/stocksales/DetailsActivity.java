@@ -3,6 +3,7 @@ package com.bk.stocksales;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
 import com.bk.stocksales.adapter.ItemsRecyclerViewAdapter;
+import com.bk.stocksales.conversion.SalesValueCalc;
+import com.bk.stocksales.graph.Vertex;
+import com.bk.stocksales.model.Rate;
+import com.bk.stocksales.model.Transaction;
 import com.bk.stocksales.model.view.Item;
 import com.bk.stocksales.rest.TransactionService;
+import com.bk.stocksales.util.AssetUtil;
+import com.google.common.collect.Maps;
+
+import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,5 +89,24 @@ public class DetailsActivity extends AppCompatActivity {
         Intent myIntent = new Intent(activity, DetailsActivity.class);
         myIntent.putExtra("sku", item.getTitle());
         activity.startActivity(myIntent);
+    }
+
+    public void postCurrConversionJob(final ItemsRecyclerViewAdapter adapter, final List<Transaction> productTransactions) {
+        new Handler().postDelayed(
+            new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        List<Rate> rates = AssetUtil.loadRatesFile(DetailsActivity.this, 1);
+
+                        SalesValueCalc salesValueCalc = new SalesValueCalc(rates, productTransactions);
+                        adapter.refreshItemsSubtitles(salesValueCalc);
+                    } catch (Exception exc) {
+                        Snackbar.make(DetailsActivity.this.mRecyclerView, "Could not calculate conversion rates", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                }
+            },
+        100);
     }
 }

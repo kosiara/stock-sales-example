@@ -9,12 +9,18 @@ import android.widget.AdapterView;
 
 import com.bk.stocksales.DetailsActivity;
 import com.bk.stocksales.MainActivity;
+import com.bk.stocksales.conversion.SalesValueCalc;
+import com.bk.stocksales.graph.Vertex;
+import com.bk.stocksales.model.Transaction;
 import com.bk.stocksales.model.view.Item;
 import com.bk.stocksales.view.RecyclerItemView;
 import com.bk.stocksales.viewmodel.RecyclerViewAdapterBase;
 import com.bk.stocksales.viewmodel.ViewWrapper;
+import com.google.common.collect.Maps;
 
+import java.util.Currency;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by bkosarzycki on 03/19/15.
@@ -81,6 +87,19 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
     public ItemsRecyclerViewAdapter isClickingEnabled(boolean clicking) {
         this.mIsClickingEnabled = clicking;
         return this;
+    }
+
+    public void refreshItemsSubtitles(final SalesValueCalc salesValueCalc) {
+        ConcurrentMap<Vertex, Float> cache = Maps.newConcurrentMap();
+        for (Item item : items) {
+            Transaction tran = (Transaction) item.getSubitem();
+            double convRate = salesValueCalc.findConversionRateForVerticesWithCache(cache,
+                    new Vertex(tran.getCurrencyCode()),
+                    new Vertex("GBP"));
+            String currSymb = Currency.getInstance("GBP").getSymbol();
+            item.setSubtitle(currSymb + tran.getAmount() * convRate);
+        }
+        notifyDataSetChanged();
     }
 }
 
