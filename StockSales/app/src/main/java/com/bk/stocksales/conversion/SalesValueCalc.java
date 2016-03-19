@@ -56,8 +56,6 @@ public class SalesValueCalc {
         }));
     }
 
-
-
     protected float findConversionForVertices(Vertex source, Vertex dest) {
         float convRate = -1.0f;
 

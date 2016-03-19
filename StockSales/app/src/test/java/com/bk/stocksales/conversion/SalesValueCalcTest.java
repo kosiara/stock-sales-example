@@ -67,6 +67,19 @@ public class SalesValueCalcTest {
         assertEquals(2.0f, convRate, 0.001);
     }
 
+    @Test
+    public void find_indirect_trans_rate() throws Exception {
+        List<Transaction> transactions = AssetUtilTestExt.loadTransactionsFile(this.getClass(), 2);
+        List<Rate> rates = AssetUtilTestExt.loadRatesFile(this.getClass(), 2);
+
+        SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
+        float convRate = salesValueCalc.findConversionForVertices(new Vertex("USD"), new Vertex("GBP"));
+        assertEquals(0.25f, convRate, 0.001);
+
+        convRate = salesValueCalc.findConversionForVertices(new Vertex("EUR"), new Vertex("AUD"));
+        assertEquals(4.0f, convRate, 0.001);
+    }
+
 //    @Test
 //    public void find_simplest_calculation() throws Exception {
 //        List<Transaction> transactions = AssetUtilTestExt.loadTransactionsFile(this.getClass(), 2);
