@@ -23,4 +23,14 @@ public class Item {
     public void setSubtitle(String subtitle) {
         this.subtitle = subtitle;
     }
+
+    public Item title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public Item subtitle(String subtitle) {
+        this.subtitle = subtitle;
+        return this;
+    }
 }
