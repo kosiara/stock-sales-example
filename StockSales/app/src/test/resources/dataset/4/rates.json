@@ -1,0 +1,18 @@
+[
+  {"from":"AUD","rate":"0.5","to":"USD"},
+  {"from":"USD","rate":"0.5","to":"EUR"},
+  {"from":"EUR","rate":"0.5","to":"GBP"},
+  {"from":"GBP","rate":"-2","to":"EUR"},
+  {"from":"EUR","rate":"2","to":"USD"},
+  {"from":"USD","rate":"-2","to":"AUD"},
+  {"from":"EUR","rate":"1.48","to":"AUD"},
+
+  {"from":"USD","rate":"-3.78","to":"PLN"},
+  {"from":"PLN","rate":"0.26","to":"USD"},
+
+  {"from":"EUR","rate":"76.36","to":"RUB"},
+  {"from":"RUB","rate":"0.013","to":"EUR"},
+
+  {"from":"PLN","rate":"17.91","to":"RUB"},
+  {"from":"RUB","rate":"0.013","to":"PLN"}
+]
