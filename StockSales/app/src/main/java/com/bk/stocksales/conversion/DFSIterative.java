@@ -33,12 +33,14 @@ public class DFSIterative {
         HashMap<Vertex, Vertex> alreadyTriedConv = new HashMap<Vertex, Vertex>();
         stack.push(sourceVertex);
 
-        while (!stack.empty()) {
+        boolean found = false;
+
+        while (!stack.empty() && !found) {
             Vertex current = stack.pop();
             if  (!current.isDiscovered()) {
                 current.setDiscovered(true);
                 for(Vertex adjVer : findAdjacentVertices(current)) {
-                    if (isSameOrInverseConversion(current, adjVer, alreadyTriedConv))
+                    if (isSameOrInverseConversion(current, adjVer, alreadyTriedConv) || found)
                         continue;
 
                     stack.push(adjVer);
@@ -49,6 +51,9 @@ public class DFSIterative {
                         List<Vertex> conversionPath = findConversionPath(sourceVertex, destVertex, parentMap);
                         conversionPaths.add(conversionPath);
                         System.out.println("FOUND - " + adjVer + ", PATH: " + convertPathToString(conversionPath) );
+
+                        //TODO: loop in finding parent in this solution - change it
+                        found = true;
                     }
                 }
             }

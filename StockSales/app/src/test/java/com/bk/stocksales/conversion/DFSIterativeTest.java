@@ -49,5 +49,13 @@ public class DFSIterativeTest {
         DFSIterative = new DFSIterative(salesValueCalc.getVertices(), salesValueCalc.cloneEdges(), new Vertex("RUB"), new Vertex("GBP"));
         path = DFSIterative.getPossibleConversionPath();
         assertEquals("RUB->PLN->USD->EUR->GBP", DFSIterative.convertPathToString(path));
+
+        DFSIterative = new DFSIterative(salesValueCalc.getVertices(), salesValueCalc.cloneEdges(), new Vertex("PLN"), new Vertex("GBP"));
+        path = DFSIterative.getPossibleConversionPath();
+        assertEquals("PLN->RUB->EUR->GBP", DFSIterative.convertPathToString(path));
+
+        DFSIterative = new DFSIterative(salesValueCalc.getVertices(), salesValueCalc.cloneEdges(), new Vertex("USD"), new Vertex("RUB"));
+        path = DFSIterative.getPossibleConversionPath();
+        assertEquals("USD->PLN->RUB", DFSIterative.convertPathToString(path));
     }
 }
