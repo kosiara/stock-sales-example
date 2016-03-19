@@ -18,8 +18,6 @@ public class DFSIterative {
     List<Vertex> vertices;
     List<Edge> edges;
 
-    //remember adjacent vertices
-
     public DFSIterative(List<Vertex> vertices, List<Edge> edges, Vertex from, Vertex to) {
         sourceVertex = from;
         destVertex = to;
@@ -30,6 +28,7 @@ public class DFSIterative {
     public void calculate() {
         VStack stack = new VStack();
         HashMap<Vertex, Vertex> parentMap = new HashMap<Vertex, Vertex>();
+        HashMap<Vertex, Vertex> alreadyTriedConv = new HashMap<Vertex, Vertex>();
         stack.push(sourceVertex);
 
         while (!stack.empty()) {
@@ -37,15 +36,28 @@ public class DFSIterative {
             if  (!current.isDiscovered()) {
                 current.setDiscovered(true);
                 for(Vertex adjVer : findAdjacentVertices(current)) {
+                    if (isSameOrInverseConversion(current, adjVer, alreadyTriedConv))
+                        continue;
+
                     stack.push(adjVer);
                     parentMap.put(adjVer, current);
+                    alreadyTriedConv.put(current, adjVer);
+
                     if (adjVer.equals(destVertex)) {
-                        System.out.println("FOUND - " + adjVer + ", PATH: " /* + printPath(sourceVertex, destVertex, parentMap) */ );
+                        System.out.println("FOUND - " + adjVer + ", PATH: " + printPath(sourceVertex, destVertex, parentMap) );
                     }
                 }
             }
         }
+    }
 
+    private boolean isSameOrInverseConversion(Vertex parent, Vertex child, HashMap<Vertex, Vertex> alreadyTriedConv) {
+        for (HashMap.Entry<Vertex, Vertex> entry : alreadyTriedConv.entrySet()) {
+            if ((entry.getKey().equals(parent) && entry.getValue().equals(child))
+                || (entry.getValue().equals(parent) && entry.getKey().equals(child)))
+                return true;
+        }
+        return false;
     }
 
     private String printPath(Vertex sourceVertex, Vertex destVertex, HashMap<Vertex, Vertex> parentMap) {
@@ -53,7 +65,10 @@ public class DFSIterative {
 
         String output = "";
         for (Vertex v: conversionPath)
-            output += v;
+            output += v + "->";
+
+        if (output.endsWith("->"))
+            output = output.substring(0, output.length() - 2);
 
         return output;
     }
