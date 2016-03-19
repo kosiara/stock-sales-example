@@ -32,6 +32,7 @@ public class RecyclerItemView extends FrameLayout {
         TextView subtitleTextView = (TextView) this.findViewById(android.R.id.text2);
 
         nameTextView.setText(item.getTitle());
+        subtitleTextView.setText(item.getSubtitle());
 
         if (clickListener != null)
             this.setOnClickListener(clickListener);

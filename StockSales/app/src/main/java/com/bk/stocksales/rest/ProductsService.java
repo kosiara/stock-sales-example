@@ -35,8 +35,10 @@ public class ProductsService {
                     List<String> skuList = TransactionFilter.getUniqueSku(transactions);
 
                     List<Item> adapterList = Lists.newArrayList();
-                    for(String sku : skuList)
-                        adapterList.add(new Item().title(sku));
+                    for(String sku : skuList) {
+                        int noOfTransaction = TransactionFilter.filterTransactions(sku, transactions).size();
+                        adapterList.add(new Item().title(sku).subtitle(Integer.toString(noOfTransaction)));
+                    }
 
                     //todo: [impr] use lambda expression from Java8 insted of reference passing
                     adapter.addItems(adapterList);
