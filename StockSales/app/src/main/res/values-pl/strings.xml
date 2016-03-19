@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">StockSales</string>
 
-    <string name="transaction_for">Transactions for</string>
+    <string name="transaction_for">Tranzakcje dla</string>
 </resources>
