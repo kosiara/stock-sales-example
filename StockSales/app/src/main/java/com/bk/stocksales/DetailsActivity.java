@@ -26,13 +26,14 @@ public class DetailsActivity extends AppCompatActivity {
     @Bind(R.id.swipe_refresh) SwipeRefreshLayout mSwipeToRefresh;
     ItemsRecyclerViewAdapter mAdapter;
     TransactionService mTransactionsService;
+    String sku;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String sku = getIntent().getStringExtra("sku");
+        sku = getIntent().getStringExtra("sku");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.transaction_for) + ": " + sku);
@@ -52,7 +53,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void initializeRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mTransactionsService.getTransactions(mRecyclerView, mAdapter);
+        mTransactionsService.getTransactionsForProduct(sku, mRecyclerView, mAdapter);
     }
 
     private void setRefreshing(final boolean val) {

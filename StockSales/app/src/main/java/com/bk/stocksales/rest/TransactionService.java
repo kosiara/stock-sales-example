@@ -24,22 +24,21 @@ public class TransactionService {
         this.context = context;
     }
 
-    public void getTransactions(final RecyclerView recyclerView, final ItemsRecyclerViewAdapter adapter) {
+    public void getTransactionsForProduct(final String sku, final RecyclerView recyclerView, final ItemsRecyclerViewAdapter adapter) {
         new Handler().postDelayed(
             new Runnable() {
                 @Override
                 public void run() {
-                    //        List<Rate> rates = AssetUtil.loadRatesFile(this, 2);
+                    if (sku == null || sku.isEmpty())
+                        return;
+
                     List<Transaction> transactions = AssetUtil.loadTransactionsFile(context, 1);
-                    List<String> skuList = TransactionFilter.getUniqueSku(transactions);
+                    List<Transaction> productTransactions = TransactionFilter.filterTransactions(sku, transactions);
 
                     List<Item> adapterList = Lists.newArrayList();
-                    for(String sku : skuList) {
-                        int noOfTransaction = TransactionFilter.filterTransactions(sku, transactions).size();
-                        adapterList.add(new Item().title(sku).subtitle(Integer.toString(noOfTransaction)));
-                    }
+                    for(Transaction tran : productTransactions)
+                        adapterList.add(new Item().title(Float.toString(tran.getAmount())).subtitle("xxxxxx"));
 
-                    //todo: [impr] use lambda expression from Java8 insted of reference passing
                     adapter.addItems(adapterList);
                     recyclerView.setAdapter(adapter);
                 }
