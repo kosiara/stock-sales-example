@@ -10,14 +10,18 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ExecutionError;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by kosiara on 3/18/16.
  */
 public class SalesValueCalc {
+
+    static HashMap<Vertex, Float> cache = Maps.newHashMap();
 
     List<Vertex> vertices = Lists.newArrayList();
     List<Edge> edges = Lists.newArrayList();
@@ -51,7 +55,7 @@ public class SalesValueCalc {
             if (currency.equals(GBP))
                 totalValue += amount;
             else {
-                double rate = findConversionRateForVertices(currency, GBP);
+                double rate = findConversionRateForVerticesWithCache(currency, GBP);
                 if (rate == -1) {
                     if (abortOnError)
                         throw new Exception("Invalid conversion rate!");
@@ -70,6 +74,15 @@ public class SalesValueCalc {
         res.saleValueResultType = type;
 
         return res;
+    }
+
+    private double findConversionRateForVerticesWithCache(Vertex currency, Vertex gbp) {
+        if (cache.containsKey(currency))
+            return cache.get(currency);
+
+        double val = findConversionRateForVertices(currency, gbp);
+        cache.put(currency, new Float(val));
+        return val;
     }
 
     public List<Transaction> filterTransactions(final String sku) {
