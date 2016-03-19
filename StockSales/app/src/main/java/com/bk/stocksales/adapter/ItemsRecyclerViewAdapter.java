@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.bk.stocksales.DetailsActivity;
+import com.bk.stocksales.MainActivity;
 import com.bk.stocksales.model.view.Item;
 import com.bk.stocksales.view.RecyclerItemView;
 import com.bk.stocksales.viewmodel.RecyclerViewAdapterBase;
@@ -36,7 +38,7 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
     public void onClick(View v) {
         RecyclerItemView view = (RecyclerItemView)v;
         Item item = view.getItem();
-        //DetailsActivity.start(mMainActivity, item, view.getThumbnailImageView());
+        DetailsActivity.start(mMainActivity, item);
     }
 
     @Override
@@ -67,8 +69,9 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
         return super.getItemCount();
     }
 
-    public void setMainActivity(Activity mainActivity) {
-        this.mMainActivity = mainActivity;
+    public ItemsRecyclerViewAdapter mainActivity(MainActivity activity) {
+        this.mMainActivity = activity;
+        return this;
     }
 }
 
