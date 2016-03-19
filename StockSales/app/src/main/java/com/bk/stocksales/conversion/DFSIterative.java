@@ -80,8 +80,6 @@ public class DFSIterative {
         return false;
     }
 
-
-
     private List<Vertex> findConversionPath(Vertex sourceVertex, Vertex destVertex, HashMap<Vertex, Vertex> parentMap) {
         List<Vertex> path = Lists.newArrayList();
         path.add(destVertex);

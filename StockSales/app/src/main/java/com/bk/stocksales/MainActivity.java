@@ -20,9 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Rate> rates = AssetUtil.loadRatesFile(this, 2);
-        List<Transaction> transactions = AssetUtil.loadTransactionsFile(this, 1);
-        SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
-        salesValueCalc.calculateStockSales("", "");
+//        List<Rate> rates = AssetUtil.loadRatesFile(this, 2);
+//        List<Transaction> transactions = AssetUtil.loadTransactionsFile(this, 1);
     }
 }

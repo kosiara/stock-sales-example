@@ -1,6 +1,7 @@
 package com.bk.stocksales.conversion;
 
 import com.bk.stocksales.conversion.model.SaleValueResult;
+import com.bk.stocksales.conversion.model.SaleValueResultType;
 import com.bk.stocksales.graph.Edge;
 import com.bk.stocksales.graph.Vertex;
 import com.bk.stocksales.model.Rate;
@@ -9,6 +10,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.ExecutionError;
 
 import java.util.List;
 
@@ -36,15 +38,38 @@ public class SalesValueCalc {
             vertices.add(v.cloneVertex());
     }
 
-    public SaleValueResult calculateStockSales(String resultingCurrency, String sku) {
+    public SaleValueResult calculateStockSalesInGBP(String sku, boolean abortOnError) throws Exception {
+
+        double totalValue = 0.0d;
+        final Vertex GBP = new Vertex("GBP");
+        SaleValueResultType type = SaleValueResultType.FULL;
 
         List<Transaction> filteredList = filterTransactions(sku);
-        double totalValue = 0.0d;
+        for (Transaction tran : filteredList) {
+            float amount = tran.getAmount();
+            Vertex currency =  new Vertex(tran.getCurrencyCode());
+            if (currency.equals(GBP))
+                totalValue += amount;
+            else {
+                double rate = findConversionRateForVertices(currency, GBP);
+                if (rate == -1) {
+                    if (abortOnError)
+                        throw new Exception("Invalid conversion rate!");
+                    else {
+                        type = SaleValueResultType.INCOMPLETE;
+                        continue;
+                    }
+                }
+                totalValue += amount * rate;
+            }
+        }
 
+        SaleValueResult res = new SaleValueResult();
+        res.currency = GBP.getCurrCode();
+        res.value = new Float(totalValue);
+        res.saleValueResultType = type;
 
-        DFSIterative DFSIterative = new DFSIterative(vertices, edges, new Vertex("AUD"), new Vertex("EUR"));
-        DFSIterative.getPossibleConversionPath();
-        return null;
+        return res;
     }
 
     public List<Transaction> filterTransactions(final String sku) {
@@ -56,13 +81,18 @@ public class SalesValueCalc {
         }));
     }
 
-    protected float findConversionForVertices(Vertex source, Vertex dest) {
+    protected float findConversionRateForVertices(Vertex source, Vertex dest) {
         float convRate = -1.0f;
 
+        if (source.equals(dest))
+            return 1.0f;
+
         //get direct rate
-        for (Edge edge : edges)
+        for (Edge edge : edges) {
+            edge.getSource().setDiscovered(false); edge.getDestination().setDiscovered(false);
             if (edge.getSource().equals(source) && edge.getDestination().equals(dest))
                 convRate = edge.getRate();
+        }
 
         if (convRate < 0) {
             DFSIterative DFSIterative = new DFSIterative(vertices, edges, source.cloneVertex(), dest.cloneVertex());
@@ -78,7 +108,7 @@ public class SalesValueCalc {
 
         double resultingConvRate = 1.0d;
         for (int i = 0; i < verticesPath.size() - 1; i++) {
-            float convRate = findConversionForVertices(verticesPath.get(i), verticesPath.get(i + 1));
+            float convRate = findConversionRateForVertices(verticesPath.get(i), verticesPath.get(i + 1));
             resultingConvRate *= convRate;
         }
 

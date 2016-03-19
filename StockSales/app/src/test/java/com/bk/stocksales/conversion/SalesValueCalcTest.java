@@ -60,10 +60,10 @@ public class SalesValueCalcTest {
         List<Rate> rates = AssetUtilTestExt.loadRatesFile(this.getClass(), 2);
 
         SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
-        float convRate = salesValueCalc.findConversionForVertices(new Vertex("EUR"), new Vertex("GBP"));
+        float convRate = salesValueCalc.findConversionRateForVertices(new Vertex("EUR"), new Vertex("GBP"));
         assertEquals(0.5f, convRate, 0.001);
 
-        convRate = salesValueCalc.findConversionForVertices(new Vertex("USD"), new Vertex("AUD"));
+        convRate = salesValueCalc.findConversionRateForVertices(new Vertex("USD"), new Vertex("AUD"));
         assertEquals(2.0f, convRate, 0.001);
     }
 
@@ -73,19 +73,20 @@ public class SalesValueCalcTest {
         List<Rate> rates = AssetUtilTestExt.loadRatesFile(this.getClass(), 2);
 
         SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
-        float convRate = salesValueCalc.findConversionForVertices(new Vertex("USD"), new Vertex("GBP"));
+        float convRate = salesValueCalc.findConversionRateForVertices(new Vertex("USD"), new Vertex("GBP"));
         assertEquals(0.25f, convRate, 0.001);
 
-        convRate = salesValueCalc.findConversionForVertices(new Vertex("EUR"), new Vertex("AUD"));
+        convRate = salesValueCalc.findConversionRateForVertices(new Vertex("EUR"), new Vertex("AUD"));
         assertEquals(4.0f, convRate, 0.001);
     }
 
-//    @Test
-//    public void find_simplest_calculation() throws Exception {
-//        List<Transaction> transactions = AssetUtilTestExt.loadTransactionsFile(this.getClass(), 2);
-//        List<Rate> rates = AssetUtilTestExt.loadRatesFile(this.getClass(), 2);
-//
-//        SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
-//        SaleValueResult result = salesValueCalc.calculateStockSales("R9704");
-//    }
+    @Test
+    public void find_simplest_calculation() throws Exception {
+        List<Transaction> transactions = AssetUtilTestExt.loadTransactionsFile(this.getClass(), 2);
+        List<Rate> rates = AssetUtilTestExt.loadRatesFile(this.getClass(), 2);
+
+        SalesValueCalc salesValueCalc = new SalesValueCalc(rates, transactions);
+        SaleValueResult result = salesValueCalc.calculateStockSalesInGBP("J4064", true);
+        assertEquals(1.875f, result.value, 0.001);
+    }
 }
