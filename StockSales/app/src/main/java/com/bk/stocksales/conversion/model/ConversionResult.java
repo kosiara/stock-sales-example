@@ -1,4 +1,4 @@
-package com.bk.stocksales.conversion;
+package com.bk.stocksales.conversion.model;
 
 /**
  * Created by kosiara on 3/18/16.
