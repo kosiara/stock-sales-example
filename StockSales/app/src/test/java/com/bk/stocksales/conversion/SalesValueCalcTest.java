@@ -110,4 +110,10 @@ public class SalesValueCalcTest {
         SaleValueResult result = salesValueCalc.calculateStockSalesInGBP("J4064", true);
         assertEquals(9780.62f, result.value, 0.001);
     }
+
+//    public void check_empty_string_currency_nodes_in_rates() throws Exception { }
+//
+//    public void check_empty_strings_in_transactions() throws Exception { }
+//
+//    public void check_minus_amounts_in_transactions() throws Exception { }
 }
