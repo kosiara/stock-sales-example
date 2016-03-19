@@ -11,7 +11,9 @@ import com.bk.stocksales.model.view.Item;
 import com.bk.stocksales.util.AssetUtil;
 import com.google.common.collect.Lists;
 
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by bkosarzycki on 3/19/16.
@@ -36,8 +38,12 @@ public class TransactionService {
                     List<Transaction> productTransactions = TransactionFilter.filterTransactions(sku, transactions);
 
                     List<Item> adapterList = Lists.newArrayList();
-                    for(Transaction tran : productTransactions)
-                        adapterList.add(new Item().title(Float.toString(tran.getAmount())).subtitle("xxxxxx"));
+                    for(Transaction tran : productTransactions) {
+                        String currSymb = Currency.getInstance(tran.getCurrencyCode()).getSymbol();
+                        adapterList.add(new Item()
+                                .title(currSymb + Float.toString(tran.getAmount()))
+                                .subtitle("xxxxxx"));
+                    }
 
                     adapter.addItems(adapterList);
                     recyclerView.setAdapter(adapter);
