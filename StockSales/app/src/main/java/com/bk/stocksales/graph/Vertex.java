@@ -2,10 +2,15 @@ package com.bk.stocksales.graph;
 
 /**
  * Created by bkosarzycki on 3/18/16.
+ *
+ * Single graph's node.
  */
 public class Vertex {
     private String currCode;
 
+    /**
+     * Tells DFS whether this node had been already been visited or not.
+     */
     private boolean discovered;
 
     public Vertex(String currCode) {

@@ -3,7 +3,9 @@ package com.bk.stocksales.model;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by kosiara on 3/18/16.
+ * Created by bkosarzycki on 3/18/16.
+ *
+ * Corresponds to currency exchange rate e.g.  EUR -> USD  1.2
  */
 public class Rate {
 

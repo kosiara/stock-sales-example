@@ -17,6 +17,10 @@ import java.util.List;
 
 /**
  * Created by bkosarzycki on 3/19/16.
+ *
+ * Represents REST call for transactions.
+ *
+ * todo: replace with REST calls
  */
 public class TransactionService {
 

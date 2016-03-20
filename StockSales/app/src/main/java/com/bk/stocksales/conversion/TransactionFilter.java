@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Created by bkosarzycki on 3/19/16.
+ *
+ * Can filter transactions based on a single SKU, as well as get list of unique SKUs.
  */
 public class TransactionFilter {
 

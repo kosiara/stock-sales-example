@@ -4,6 +4,10 @@ import com.bk.stocksales.model.Rate;
 
 /**
  * Created by bkosarzycki on 3/18/16.
+ *
+ * Graph's edge. Has source and destination.
+ * Rate represents edge's weight.
+ *
  */
 public class Edge {
 

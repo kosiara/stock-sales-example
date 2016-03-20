@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by kosiara on 3/18/16.
+ *
+ * Represents transaction made for a single product. An amount was paid in a currency for this transaction.
  */
 public class Transaction {
 

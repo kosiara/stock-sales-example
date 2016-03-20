@@ -20,6 +20,8 @@ import java.util.List;
 
 /**
  * Created by bkosarzycki on 3/18/16.
+ *
+ * Reads sample data from assets.
  */
 public class AssetUtil {
 
