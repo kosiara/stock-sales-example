@@ -6,7 +6,7 @@ First Activity lists available products and the second all transactions connecte
 
 ## currency
 
-To calculate currency a naive depth-first-search algoirthm was used. In handles computations pretty good in most cases.
+To calculate currency a naive depth-first-search algoirthm was used. It handles computations pretty good in most cases.
 
 ## apk
 
