@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 
+import com.bk.stocksales.MainActivity;
 import com.bk.stocksales.adapter.ItemsRecyclerViewAdapter;
 import com.bk.stocksales.conversion.SalesValueCalc;
 import com.bk.stocksales.conversion.TransactionFilter;
@@ -31,7 +32,7 @@ public class ProductsService {
             new Runnable() {
                 @Override
                 public void run() {
-                    List<Transaction> transactions = AssetUtil.loadTransactionsFile(context, 1);
+                    List<Transaction> transactions = AssetUtil.loadTransactionsFile(context, MainActivity.DATASET_NO);
                     List<String> skuList = TransactionFilter.getUniqueSku(transactions);
 
                     List<Item> adapterList = Lists.newArrayList();

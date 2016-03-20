@@ -1,9 +1,10 @@
 package com.bk.stocksales.rest;
 
-import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 
+import com.bk.stocksales.DetailsActivity;
+import com.bk.stocksales.MainActivity;
 import com.bk.stocksales.adapter.ItemsRecyclerViewAdapter;
 import com.bk.stocksales.conversion.TransactionFilter;
 import com.bk.stocksales.model.Transaction;
@@ -11,6 +12,7 @@ import com.bk.stocksales.model.view.Item;
 import com.bk.stocksales.util.AssetUtil;
 import com.google.common.collect.Lists;
 
+import java.util.Currency;
 import java.util.List;
 
 /**
@@ -18,30 +20,36 @@ import java.util.List;
  */
 public class TransactionService {
 
-    private Context context;
+    private DetailsActivity detailsActivity;
 
-    public TransactionService(Context context) {
-        this.context = context;
+    public TransactionService(DetailsActivity activity) {
+        this.detailsActivity = activity;
     }
 
-    public void getTransactions(final RecyclerView recyclerView, final ItemsRecyclerViewAdapter adapter) {
+    public void getTransactionsForProduct(final String sku, final RecyclerView recyclerView, final ItemsRecyclerViewAdapter adapter) {
         new Handler().postDelayed(
             new Runnable() {
                 @Override
                 public void run() {
-                    //        List<Rate> rates = AssetUtil.loadRatesFile(this, 2);
-                    List<Transaction> transactions = AssetUtil.loadTransactionsFile(context, 1);
-                    List<String> skuList = TransactionFilter.getUniqueSku(transactions);
+                    if (sku == null || sku.isEmpty())
+                        return;
+
+                    List<Transaction> transactions = AssetUtil.loadTransactionsFile(detailsActivity, MainActivity.DATASET_NO);
+                    List<Transaction> productTransactions = TransactionFilter.filterTransactions(sku, transactions);
 
                     List<Item> adapterList = Lists.newArrayList();
-                    for(String sku : skuList) {
-                        int noOfTransaction = TransactionFilter.filterTransactions(sku, transactions).size();
-                        adapterList.add(new Item().title(sku).subtitle(Integer.toString(noOfTransaction)));
+                    for(Transaction tran : productTransactions) {
+                        String currSymb = Currency.getInstance(tran.getCurrencyCode()).getSymbol();
+                        adapterList.add(new Item()
+                                .title(currSymb + Float.toString(tran.getAmount()))
+                                .subtitle("-------")
+                                .item(tran)
+                        );
                     }
 
-                    //todo: [impr] use lambda expression from Java8 insted of reference passing
                     adapter.addItems(adapterList);
                     recyclerView.setAdapter(adapter);
+                    detailsActivity.postCurrConversionJob(adapter, productTransactions);
                 }
             }, 75);
     }

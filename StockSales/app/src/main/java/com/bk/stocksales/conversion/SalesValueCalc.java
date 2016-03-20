@@ -77,7 +77,7 @@ public class SalesValueCalc {
         return res;
     }
 
-    private double findConversionRateForVerticesWithCache(ConcurrentMap<Vertex, Float> cache, Vertex currency, Vertex gbp) {
+    public double findConversionRateForVerticesWithCache(ConcurrentMap<Vertex, Float> cache, Vertex currency, Vertex gbp) {
         if (cache.containsKey(currency))
             return cache.get(currency);
 
