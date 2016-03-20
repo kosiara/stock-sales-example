@@ -137,7 +137,8 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
                 sum += gdpAmount;
         }
         String prevTxt = totalTV.getText().toString().replace("0.00", "");
-        totalTV.setText(prevTxt + String.format(Locale.ENGLISH, "%.2f", sum));
+        totalTV.setText(prevTxt + Currency.getInstance("GBP").getSymbol() +
+                String.format(Locale.ENGLISH, "%.2f", sum));
     }
 
     public interface RecyclerViewActivity {
