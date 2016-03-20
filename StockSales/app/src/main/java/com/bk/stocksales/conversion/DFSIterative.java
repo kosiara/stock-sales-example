@@ -10,6 +10,10 @@ import java.util.Stack;
 
 /**
  * Created by bkosarzycki on 3/19/16.
+ *
+ * This algorithm is a variation of iterative Depth First Search for a graph.
+ * To make it more efficient and avoid cycles we do not go trough the same rate conversion twice.
+ * We also do not go backwards i.e. if we did EUR -> USD, we won't do USD -> EUR.
  */
 public class DFSIterative {
 
@@ -71,6 +75,10 @@ public class DFSIterative {
         return conversionPaths.get(indx);
     }
 
+    /**
+     * Assures that we do not go trough the same rate conversion twice.
+     * We also do not go backwards.
+     */
     private boolean isSameOrInverseConversion(Vertex parent, Vertex child, HashMap<Vertex, Vertex> alreadyTriedConv) {
         for (HashMap.Entry<Vertex, Vertex> entry : alreadyTriedConv.entrySet()) {
             if ((entry.getKey().equals(parent) && entry.getValue().equals(child))
@@ -93,13 +101,6 @@ public class DFSIterative {
 
         path = Lists.reverse(path);
         return path;
-    }
-
-    private int findVertexIndex(Vertex vert) {
-        for (int i = 0; i < vertices.size() ; i++)
-            if (vertices.get(i).equals(vert))
-                return i;
-        return -1;
     }
 
     private List<Vertex> findAdjacentVertices(Vertex vertex) {

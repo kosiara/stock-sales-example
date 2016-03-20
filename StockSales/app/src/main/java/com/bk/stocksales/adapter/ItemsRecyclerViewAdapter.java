@@ -27,11 +27,17 @@ import java.util.concurrent.ConcurrentMap;
  * Created by bkosarzycki on 03/19/15.
  *
  * Provides data for Activity's RecyclerView
+ *
+ * This adapter is currently connected with two activities - MainActivity and DetailsActivity
  */
 public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, RecyclerItemView>
             implements AdapterView.OnClickListener {
 
     private Activity mActivity;
+
+    /**
+     * Determines whether adapter rows are clickable or not
+     */
     private boolean mIsClickingEnabled = true;
 
     @Override
@@ -90,6 +96,9 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
         return this;
     }
 
+    /**
+     *  Refreshes item subtitles - i.e. values in pounds
+     */
     public void refreshItemsSubtitles(final TextView totalTV, final SalesValueCalc salesValueCalc) {
         ConcurrentMap<Vertex, Float> cache = Maps.newConcurrentMap();
         for (Item item : items) {
@@ -116,6 +125,9 @@ public class ItemsRecyclerViewAdapter extends RecyclerViewAdapterBase<Item, Recy
         );
     }
 
+    /**
+     *  Refreshes TOTAL AMOUNT textview
+     */
     private void refreshTotalTV(TextView totalTV) {
         double sum = 0.0d;
         for (Item item: items) {

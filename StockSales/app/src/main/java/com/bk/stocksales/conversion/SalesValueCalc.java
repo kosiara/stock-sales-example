@@ -19,6 +19,8 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Created by kosiara on 3/18/16.
+ *
+ * Calculates rate conversions for a group of vertices or a graph-path.
  */
 public class SalesValueCalc {
 
