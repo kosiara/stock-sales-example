@@ -8,15 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.bk.stocksales.adapter.ItemsRecyclerViewAdapter;
-import com.bk.stocksales.conversion.SalesValueCalc;
-import com.bk.stocksales.model.Rate;
-import com.bk.stocksales.model.Transaction;
-import com.bk.stocksales.model.view.Item;
 import com.bk.stocksales.rest.ProductsService;
-import com.bk.stocksales.util.AssetUtil;
-import com.google.common.collect.Lists;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,7 +16,7 @@ import butterknife.ButterKnife;
 /**
  * created by bkosarzycki on 3/18/16.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ItemsRecyclerViewAdapter.RecyclerViewActivity {
 
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.swipe_refresh) SwipeRefreshLayout mSwipeToRefresh;
@@ -41,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdapter = new ItemsRecyclerViewAdapter().mainActivity(this);
+        mAdapter = new ItemsRecyclerViewAdapter().activity(this);
         mProductService = new ProductsService(this);
         ButterKnife.bind(this);
 
@@ -67,5 +59,10 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(MainActivity.this.mRecyclerView, "Refreshing not implemented", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show(); }
         });
+    }
+
+    @Override
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
     }
 }

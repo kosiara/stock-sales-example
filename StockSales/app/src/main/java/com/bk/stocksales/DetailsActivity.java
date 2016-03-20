@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.bk.stocksales.adapter.ItemsRecyclerViewAdapter;
 import com.bk.stocksales.conversion.SalesValueCalc;
@@ -30,10 +32,11 @@ import butterknife.ButterKnife;
 /**
  * created by bkosarzycki on 3/18/16.
  */
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements ItemsRecyclerViewAdapter.RecyclerViewActivity {
 
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.swipe_refresh) SwipeRefreshLayout mSwipeToRefresh;
+    @Bind(R.id.total_sum_tv) TextView mTotalTV;
     ItemsRecyclerViewAdapter mAdapter;
     TransactionService mTransactionsService;
     String sku;
@@ -48,11 +51,12 @@ public class DetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.transaction_for) + ": " + sku);
 
-        mAdapter = new ItemsRecyclerViewAdapter().isClickingEnabled(false);
+        mAdapter = new ItemsRecyclerViewAdapter().activity(this).isClickingEnabled(false);
         mTransactionsService = new TransactionService(this);
         ButterKnife.bind(this);
 
         initializeRecyclerView();
+        mTotalTV.setVisibility(View.VISIBLE);
 
         mSwipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override public void onRefresh() {
@@ -100,7 +104,7 @@ public class DetailsActivity extends AppCompatActivity {
                         List<Rate> rates = AssetUtil.loadRatesFile(DetailsActivity.this, MainActivity.DATASET_NO);
 
                         SalesValueCalc salesValueCalc = new SalesValueCalc(rates, productTransactions);
-                        adapter.refreshItemsSubtitles(salesValueCalc);
+                        adapter.refreshItemsSubtitles(mTotalTV, salesValueCalc);
                     } catch (Exception exc) {
                         Snackbar.make(DetailsActivity.this.mRecyclerView, "Could not calculate conversion rates", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -108,5 +112,10 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             },
         100);
+    }
+
+    @Override
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
     }
 }

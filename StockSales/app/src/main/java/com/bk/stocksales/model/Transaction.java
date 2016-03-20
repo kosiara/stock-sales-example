@@ -11,6 +11,11 @@ public class Transaction {
     private float amount;
     @SerializedName("currency") private String currencyCode;
 
+    /**
+     * Holds converted GDP amount
+     */
+    private float gdpAmount = -1.00f;
+
     public String getSku() {
         return sku;
     }
@@ -33,5 +38,13 @@ public class Transaction {
 
     public void setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
+    }
+
+    public float getGdpAmount() {
+        return gdpAmount;
+    }
+
+    public void setGdpAmount(float gdpAmount) {
+        this.gdpAmount = gdpAmount;
     }
 }
