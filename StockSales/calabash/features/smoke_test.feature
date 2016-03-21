@@ -1,6 +1,6 @@
-Feature: Check single product feature
+Feature: Check single product 
 
-  Scenario: As a valid user I can log into my app
+  Scenario: Checks transactions for a single product
     When I see "StockSales"
     Then I press "J4064"
     When I see "Transactions for:"
