@@ -18,4 +18,7 @@ Download *.apk [here](https://github.com/kosiara/stock-sales-example/blob/master
 <img src="https://github.com/kosiara/stock-sales-example/raw/master/StockSales/screenshots/device-2016-03-20-020207.png"
   width="240px" height="427px" />
   
-  
+# calabash
+To run calabash tests use:
+
+```./calabash/run.sh```
