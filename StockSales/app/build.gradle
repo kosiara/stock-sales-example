@@ -53,7 +53,7 @@ dependencies {
     compile 'com.google.guava:guava:19.0'
 }
 
-//---------------------- Additional configuration for JUnitTest ------------------------
+//---------------------- Additional configuration for JUnit tests ------------------------
 //-----  Execute JUnit tests with:   gradle clean test
 
 tasks.withType(Test) {
@@ -90,3 +90,11 @@ dependencies {
     unitTestCompile 'com.google.android:android:4.0.1.2'
     unitTestCompile 'com.google.guava:guava:19.0'
 }
+
+//run test before assembleRelease
+project.tasks.assembleRelease.dependsOn{
+    project.tasks.findAll { task ->
+        task.name.startsWith('testRelease')
+    }
+}
+
