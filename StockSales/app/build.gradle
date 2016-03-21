@@ -54,7 +54,17 @@ dependencies {
 }
 
 //---------------------- Additional configuration for JUnitTest ------------------------
-//-----  Execute JUnit tests with:   gradle -i clean test
+//-----  Execute JUnit tests with:   gradle clean test
+
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+    }
+    afterTest { desc, result ->
+        println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+}
+
 sourceSets {
     unitTest {
         java.srcDir file('src/test/java')
