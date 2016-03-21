@@ -26,4 +26,4 @@ Execute Unit tests with:
 # calabash
 To run calabash tests use:
 
-```./calabash/run.sh```
+``` ./calabash/run.sh ```
