@@ -51,5 +51,50 @@ dependencies {
 
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.google.guava:guava:19.0'
-
 }
+
+//---------------------- Additional configuration for JUnit tests ------------------------
+//-----  Execute JUnit tests with:   gradle clean test
+
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+    }
+    afterTest { desc, result ->
+        println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+}
+
+sourceSets {
+    unitTest {
+        java.srcDir file('src/test/java')
+        resources.srcDir file('src/test/resources')
+    }
+}
+
+configurations {
+    unitTestCompile.extendsFrom runtime
+    unitTestRuntime.extendsFrom unitTestCompile
+}
+
+task unitTest(type:Test, dependsOn: assemble) {
+    description = "run unit tests"
+    testClassesDir = project.sourceSets.unitTest.output.classesDir
+    classpath = project.sourceSets.unitTest.runtimeClasspath
+}
+check.dependsOn unitTest
+
+dependencies {
+    unitTestCompile files("$project.buildDir/intermediates/classes/release")
+    unitTestCompile 'junit:junit:4.12'
+    unitTestCompile 'com.google.android:android:4.0.1.2'
+    unitTestCompile 'com.google.guava:guava:19.0'
+}
+
+//run test before assembleRelease
+project.tasks.assembleRelease.dependsOn{
+    project.tasks.findAll { task ->
+        task.name.startsWith('testRelease')
+    }
+}
+
